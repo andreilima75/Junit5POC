@@ -3,8 +3,11 @@ package org.example;
 import org.junit.jupiter.api.Order;
 import org.testng.annotations.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 public class JUnitTest {
 
@@ -17,5 +20,29 @@ public class JUnitTest {
     @Test
     void failingAssertion() {
         assertTrue(true, "mensagem");
+    }
+
+    @Test
+    void assertionsDemo() {
+        assertAll("Group of assertions",
+                () -> assertEquals(5, 2 + 3),
+                () -> assertNotNull("hello"),
+                () -> assertTrue(2 > 1)
+        );
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            throw new IllegalArgumentException("Invalid");
+        });
+
+        assertTimeout(Duration.ofMillis(100), () -> Thread.sleep(50));
+    }
+
+    @Test
+    void assumptionDemo() {
+        assumeTrue(System.getProperty("os.name").contains("Linux"),
+                "Test only runs on Linux");
+
+        assumingThat(System.getenv("CI") != null,
+                () -> assertTrue(true));
     }
 }
