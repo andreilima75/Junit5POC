@@ -1,6 +1,11 @@
 package org.example;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -44,5 +49,27 @@ public class JUnitTest {
 
         assumingThat(System.getenv("CI") != null,
                 () -> assertTrue(true));
+    }
+
+    @Nested
+    @DisplayName("📁 Nested test class")
+    class NestedTests {
+
+        @Test
+        void nestedTest() {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    @EnabledOnOs(OS.LINUX)
+    void onlyOnLinux() {
+        assertTrue(true);
+    }
+
+    @Test
+    @EnabledIfEnvironmentVariable(named = "CI", matches = "true")
+    void onlyOnCI() {
+        assertTrue(true);
     }
 }
