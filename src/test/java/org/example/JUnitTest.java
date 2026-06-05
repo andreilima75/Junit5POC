@@ -8,6 +8,10 @@ import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -86,5 +90,27 @@ public class JUnitTest {
     @Tag("integration")
     void taggedTest() {
         assertTrue(true);
+    }
+
+    @Test
+    @ExtendWith(TimingExtension.class)
+    void testWithCustomExtension() {
+        assertTrue(true);
+    }
+
+    static class TimingExtension implements BeforeEachCallback, AfterEachCallback {
+
+        private long startTime;
+
+        @Override
+        public void beforeEach(ExtensionContext context) {
+            startTime = System.currentTimeMillis();
+        }
+
+        @Override
+        public void afterEach(ExtensionContext context) {
+            long duration = System.currentTimeMillis() - startTime;
+            System.out.println("Test " + context.getDisplayName() + " took " + duration + "ms");
+        }
     }
 }
