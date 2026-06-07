@@ -1,9 +1,6 @@
 package org.example;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.EnabledOnOs;
@@ -112,5 +109,11 @@ public class JUnitTest {
             long duration = System.currentTimeMillis() - startTime;
             System.out.println("Test " + context.getDisplayName() + " took " + duration + "ms");
         }
+    }
+
+    @Test
+    @Disabled("Temporarily disabled")
+    void disabledTest() {
+        fail("This should not run");
     }
 }
